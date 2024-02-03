@@ -9,6 +9,12 @@ use Illuminate\Http\Request;
 
 class ReadingIntervalController extends Controller
 {
+    protected $smsService;
+    public function __construct(SMSService $smsService)
+    {
+        $this->smsService = $smsService;
+    }
+
     public function submitReadingInterval(SubmitReadingIntervalRequest $request)
     {
 
@@ -21,9 +27,7 @@ class ReadingIntervalController extends Controller
         ]);
 
         // Send SMS
-        $smsProvider = env('SMS_PROVIDER');
-        $smsService = new SMSService($smsProvider);
-        $smsService->sendThankYouSMS($request->user_id);
+        $this->smsService->sendThankYouSMS($request->user_id);
 
         return response()->json(['message' => 'Reading interval submitted successfully']);
     }

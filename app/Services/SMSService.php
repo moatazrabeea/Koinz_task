@@ -9,10 +9,9 @@ class SMSService
 {
     protected $provider;
 
-    public function __construct($provider)
+    public function __construct()
     {
-        $this->provider = $provider;
-    }
+        $this->provider = env('SMS_PROVIDER');    }
 
     public function sendThankYouSMS($userId)
     {
