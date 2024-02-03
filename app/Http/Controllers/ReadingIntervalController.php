@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SubmitReadingIntervalRequest;
 use Illuminate\Http\Request;
 
 class ReadingIntervalController extends Controller
 {
-    public function submitReadingInterval(Request $request)
+    public function submitReadingInterval(SubmitReadingIntervalRequest $request)
     {
-        // Validate request data
+
 
         $readingInterval = ReadingInterval::create([
             'user_id' => $request->user_id,
