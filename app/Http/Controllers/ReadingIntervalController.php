@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SubmitReadingIntervalRequest;
+use App\Models\ReadingInterval;
+use App\Services\SMSService;
 use Illuminate\Http\Request;
 
 class ReadingIntervalController extends Controller

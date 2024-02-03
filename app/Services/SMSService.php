@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\User;
+use Illuminate\Support\Facades\Http;
+
 class SMSService
 {
     protected $provider;
@@ -13,6 +16,19 @@ class SMSService
 
     public function sendThankYouSMS($userId)
     {
-        // Logic to send SMS
+        $user = User::find($userId);
+        $data = [
+            'to' => $user->phone_number,
+            'message' => 'Thank you for using our service!',
+        ];
+        $response = Http::post($this->provider, $data);
+
+        if ($response->successful()) {
+
+            return response()->json(['message' => 'SMS sent successfully']);
+        } else {
+
+            return response()->json(['error' => 'Failed to send SMS'], $response->status());
+        }
     }
 }

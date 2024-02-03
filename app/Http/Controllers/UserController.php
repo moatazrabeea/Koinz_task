@@ -2,37 +2,30 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginValidationRequest;
+use App\Http\Requests\SignupValidationRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
-    public function signup(Request $request)
+    public function signup(SignupValidationRequest $request)
     {
-        $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users',
-            'password' => 'required|min:6',
-        ]);
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
+            'phone_number' => $request->phone_number,
             'password' => bcrypt($request->password),
         ]);
 
         return response()->json(['message' => 'User registered successfully', 'user' => $user]);
     }
 
-    public function login(Request $request)
+    public function login(LoginValidationRequest $request)
     {
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($request->only('email', 'password'))) {
             $user = Auth::user();
 
             $token = $user->createToken('authToken')->accessToken;
